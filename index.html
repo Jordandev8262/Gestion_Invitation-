@@ -319,6 +319,58 @@ textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shad
   max-width: 400px;
   margin: 0 auto;
 }
+.photo-frame {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 0.65rem;
+  background: var(--card);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  object-fit: cover;
+}
+.moment-heart {
+  display: block;
+  margin: 0 auto 1.25rem;
+  width: fit-content;
+  font: 400 2.4rem "Playfair Display", serif;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0;
+  filter: drop-shadow(0 2px 12px rgba(197, 160, 89, 0.4));
+}
+#moment.reveal .moment-heart {
+  animation: momentHeart 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+}
+#moment .photo-frame {
+  opacity: 0;
+  transform: scale(0.96) translateY(12px);
+  transition: opacity 0.85s ease 0.55s, transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s, box-shadow 0.6s ease 0.95s;
+}
+#moment.reveal .photo-frame {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  box-shadow: 0 16px 40px -12px rgba(197, 160, 89, 0.28);
+}
+@keyframes momentHeart {
+  0% { opacity: 0; transform: scale(0.55); }
+  45% { opacity: 1; transform: scale(1.12); }
+  70% { transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .moment-heart { opacity: 1; animation: none; }
+  #moment .photo-frame { transition: none; opacity: 1; transform: none; }
+  #moment.reveal .photo-frame { box-shadow: var(--shadow); }
+}
 </style>
 
 <section id="qrs">
@@ -377,15 +429,22 @@ textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shad
   </div>
 </section>
 
+<section id="moment" aria-label="Portrait des mariés">
+  <span class="moment-heart" aria-hidden="true">♥</span>
+  <figure class="photo-frame">
+    <img src="assets/portrait.png" alt="Manassé et Vainqueur — portrait des mariés" width="683" height="1024" loading="lazy" decoding="async">
+  </figure>
+</section>
+
 <section id="map">
   <h2>Lieu</h2>
   <div class="glass-card">
     <div style="font-size: 3rem; margin-bottom: 1rem;">📍</div>
-    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Salle Les Jardins d’Or</h3>
-    <p style="margin-bottom: 1.5rem;">Avenue de la Paix, Kinshasa</p>
+    <h3 id="map-name" style="font-size: 1.4rem; margin-bottom: 0.5rem;">La Shekina</h3>
+    <p id="map-addr" style="margin-bottom: 1.5rem; line-height: 1.65;">Golf Faustin<br>Route Munua coin Dikuku<br>Arrêt La Katangaise<br>Lubumbashi</p>
     <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Kinshasa+Avenue+de+la+Paix">VOIR LE PLAN</a>
-      <a class="btn on" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Kinshasa+Avenue+de+la+Paix">ITINÉRAIRE</a>
+      <a class="btn" id="map-view" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=La+Shekina%2C+Route+Munua+coin+Dikuku%2C+Lubumbashi">VOIR LE PLAN</a>
+      <a class="btn on" id="map-dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=La+Shekina%2C+Route+Munua+coin+Dikuku%2C+Lubumbashi">ITINÉRAIRE</a>
     </div>
   </div>
 </section>
@@ -406,7 +465,7 @@ const defConf = {
   deadline: new Date('2026-11-20T23:59:00'),
   wa: '243000000000',
   title: 'Mariage de Manassé & Vainqueur',
-  place: 'Avenue de la Paix, Kinshasa'
+  place: 'La Shekina, Golf Faustin, Route Munua coin Dikuku, arrêt La Katangaise, Lubumbashi'
 };
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -433,8 +492,11 @@ if (savedConf.welcome) {
   $$('.cover p')[1].textContent = savedConf.welcome;
 }
 if (savedConf.place) {
-  $$('#map p')[0].textContent = savedConf.place;
+  $('#map-addr').textContent = savedConf.place;
 }
+const mapQ = encodeURIComponent(C.place);
+$('#map-view').href = 'https://www.google.com/maps/search/?api=1&query=' + mapQ;
+$('#map-dir').href = 'https://www.google.com/maps/dir/?api=1&destination=' + mapQ;
 if (savedConf.rsvpText) {
   $('#rsvp .glass-card p').firstChild.textContent = savedConf.rsvpText + ' ';
 }
@@ -574,7 +636,7 @@ rc();
 const FAQ = {
   'Horaires': 'La cérémonie commence à 18 h 00, accueil dès 17 h 30.',
   'Dress code': 'Noir et or. Élégance de rigueur.',
-  'Adresse': 'Salle Les Jardins d’Or, ' + C.place + '. Voir la section Lieu.',
+  'Adresse': C.place + '. Voir la section Lieu.',
   'Parking': 'Un parking gardé est disponible à l’entrée.',
   'Enfants': 'Les enfants sont les bienvenus, indiquez-les dans le RSVP.'
 };

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin · Grâce & David</title>
+  <title>Admin · Manassé & Vainqueur</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -200,7 +200,7 @@
       <button onclick="showTab('messages')"><i data-lucide="message-square"></i> <span>Livre d'or</span></button>
     </nav>
     <div style="padding: 2rem;">
-      <button class="btn" style="width: 100%; background: rgba(255,255,255,0.1);" onclick="window.open('Invitation interactive · Grâce & David.html')">
+      <button class="btn" style="width: 100%; background: rgba(255,255,255,0.1);" onclick="window.open('index.html')">
         <i data-lucide="external-link"></i> <span style="margin-left: 8px;">Voir l'invitation</span>
       </button>
     </div>
@@ -271,7 +271,7 @@
           <h3>Général & Couverture</h3>
           <div class="form-group">
             <label>Noms des mariés (Titre)</label>
-            <input type="text" id="conf-title" placeholder="Ex: Grâce & David">
+            <input type="text" id="conf-title" placeholder="Ex: Manassé & Vainqueur">
           </div>
           <div class="form-group">
             <label>Texte de bienvenue</label>
@@ -283,7 +283,7 @@
           </div>
           <div class="form-group">
             <label>Lieu (Nom & Adresse)</label>
-            <input type="text" id="conf-place" placeholder="Ex: Salle Les Jardins d’Or, Kinshasa">
+            <input type="text" id="conf-place" placeholder="Ex: La Shekina, Route Munua coin Dikuku, Lubumbashi">
           </div>
           <div class="form-group">
             <label>Numéro WhatsApp (Bot)</label>
@@ -420,7 +420,7 @@
 
     function updateTables() {
       const tables = S.get('tables', [
-        {id: 1, name: 'Table d\'Honneur', guests: ['Grâce', 'David']}, 
+        {id: 1, name: 'Table d\'Honneur', guests: ['Manassé', 'Vainqueur']}, 
         {id: 2, name: 'Famille Mariée', guests: []},
         {id: 3, name: 'Famille Marié', guests: []},
         {id: 4, name: 'Amis', guests: []}
@@ -488,17 +488,19 @@
 
     // Init Config
     function initConfig() {
-      const C = S.get('config', {
-        title: 'Grâce & David',
+      const defConf = {
+        title: 'Manassé & Vainqueur',
         welcome: 'ont la joie de vous convier à la célébration de leur union.',
-        date: '2027-02-27T14:00',
-        place: 'Salle Les Jardins d’Or, Avenue de la Paix, Kinshasa',
+        date: '2026-12-04T18:00',
+        place: 'La Shekina, Golf Faustin, Route Munua coin Dikuku, arrêt La Katangaise, Lubumbashi',
         wa: '243000000000',
-        rsvpText: 'Merci de confirmer votre présence avant le 13 février 2027',
+        rsvpText: 'Merci de confirmer votre présence avant le 20 novembre 2026',
         drinksText: 'Aidez-nous à préparer la fête : choisissez vos boissons préférées.',
         giftText: 'Votre présence est notre plus beau cadeau. Si vous souhaitez nous gâter, voici comment faire.',
         interText: 'Partagez votre enthousiasme avec les autres invités !'
-      });
+      };
+      const saved = S.get('config', null);
+      const C = saved ? { ...defConf, ...saved } : defConf;
       document.getElementById('conf-title').value = C.title || '';
       document.getElementById('conf-welcome').value = C.welcome || '';
       document.getElementById('conf-date').value = C.date || '';

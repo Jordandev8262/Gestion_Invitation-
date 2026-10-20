@@ -48,12 +48,12 @@ CREATE TABLE IF NOT EXISTS social_reactions (
 -- Insertion de la configuration par défaut
 INSERT INTO wedding_config (key, value) VALUES 
 ('main', '{
-    "title": "Grâce & David",
+    "title": "Manassé & Vainqueur",
     "welcome": "ont la joie de vous convier à la célébration de leur union.",
-    "date": "2027-02-27T14:00",
-    "place": "Salle Les Jardins d’Or, Avenue de la Paix, Kinshasa",
+    "date": "2026-12-04T18:00",
+    "place": "La Shekina, Golf Faustin, Route Munua coin Dikuku, arrêt La Katangaise, Lubumbashi",
     "wa": "243000000000",
-    "rsvpText": "Merci de confirmer votre présence avant le 13 février 2027",
+    "rsvpText": "Merci de confirmer votre présence avant le 20 novembre 2026",
     "drinksText": "Aidez-nous à préparer la fête : choisissez vos boissons préférées.",
     "giftText": "Votre présence est notre plus beau cadeau. Si vous souhaitez nous gâter, voici comment faire.",
     "interText": "Partagez votre enthousiasme avec les autres invités !"
