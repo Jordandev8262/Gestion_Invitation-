@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Invitation · Grâce & David</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdfbf7;
+  --card: rgba(255, 255, 255, 0.8);
+  --ink: #2c2a26;
+  --mute: #7c7569;
+  --gold: #c5a059;
+  --gold-light: #e6d5b8;
+  --sage: #4a6762;
+  --sage-light: #dbe5e3;
+  --line: #eee6d8;
+  --chip: #ffffff;
+  --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+  --glass: blur(10px) saturate(180%);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1815;
+    --card: rgba(35, 32, 28, 0.8);
+    --ink: #f1ebdd;
+    --mute: #a79e8b;
+    --gold: #d4af6a;
+    --gold-light: #4a3d25;
+    --sage: #6a8e89;
+    --sage-light: #2c3a38;
+    --line: #3d372e;
+    --chip: #2c2822;
+    --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 300 16px/1.8 'Montserrat', system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+main { width: 100%; max-width: 520px; position: relative; }
+
+/* Typography */
+h1, h2, h3 { font-family: "Playfair Display", serif; font-weight: 500; margin: 0; text-align: center; }
+h2 { font-size: 2.4rem; color: var(--sage); margin-bottom: 0.8rem; position: relative; }
+h2::after { content: ''; display: block; width: 40px; height: 2px; background: var(--gold); margin: 0.8rem auto; opacity: 0.6; }
+
+section {
+  padding: 5rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+section.reveal { opacity: 1; transform: translateY(0); }
+
+p { margin: 1rem auto; max-width: 36ch; font-size: 1.05rem; }
+
+/* Cover Section */
+.cover {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: 
+    linear-gradient(rgba(26, 24, 21, 0.4), rgba(26, 24, 21, 0.7)),
+    url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  border: 0;
+  opacity: 1;
+  transform: none;
+}
+.cover h1 {
+  font-size: clamp(2.8rem, 12vw, 4rem);
+  letter-spacing: 0.2em;
+  margin: 1.5rem 0;
+  font-weight: 300;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.mono {
+  width: 140px;
+  height: 140px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 400 2.8rem "Dancing Script", cursive;
+  color: var(--gold);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 40px rgba(197, 160, 89, 0.2);
+  margin-bottom: 2rem;
+}
+.orn { color: var(--gold); letter-spacing: 0.8em; font-size: 0.9rem; opacity: 0.8; }
+.hint {
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  animation: bob 2s infinite ease-in-out;
+}
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+/* Countdown */
+.count { display: flex; gap: 0.8rem; justify-content: center; margin: 2rem 0; }
+.count div {
+  background: var(--card);
+  backdrop-filter: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1rem 0.5rem;
+  min-width: 85px;
+  box-shadow: var(--shadow);
+}
+.count b { display: block; font: 600 2.2rem "Playfair Display", serif; color: var(--gold); line-height: 1; margin-bottom: 0.2rem; }
+.count span { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mute); }
+
+/* Buttons */
+.btn {
+  font: 500 0.85rem 'Montserrat', sans-serif;
+  letter-spacing: 0.15em;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--gold);
+  padding: 1rem 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0.5rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn:hover { background: var(--gold); color: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3); }
+.btn.on { background: var(--sage); border-color: var(--sage); color: #fff; }
+.btn.on:hover { background: #3d5551; }
+
+/* Forms & Inputs */
+textarea, input[type=text], input[type=number] {
+  width: 100%;
+  max-width: 360px;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font: 400 1rem 'Montserrat', sans-serif;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1); }
+
+/* Chips */
+.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin: 1.5rem 0; }
+.chip {
+  background: var(--chip);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font: 500 0.8rem 'Montserrat', sans-serif;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.chip[aria-pressed=true] { background: var(--sage); border-color: var(--sage); color: #fff; transform: scale(1.05); }
+
+/* Messages / Guestbook */
+.msgs { max-width: 360px; margin: 2rem auto; text-align: left; display: grid; gap: 1rem; }
+.msg {
+  background: var(--card);
+  backdrop-filter: var(--glass);
+  border-radius: 16px 16px 16px 4px;
+  padding: 1.2rem;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--gold);
+  animation: fadeIn 0.5s ease forwards;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Bars / Social */
+.bar { max-width: 360px; margin: 1rem auto; text-align: left; font-size: 0.9rem; font-weight: 500; }
+.bar i { display: block; height: 8px; background: var(--line); border-radius: 10px; margin-top: 6px; overflow: hidden; }
+.bar i u { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.react { font-size: 1.8rem; background: var(--card); border: 1px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0.6rem; margin: 0.3rem; transition: all 0.3s ease; box-shadow: var(--shadow); }
+.react:hover { transform: scale(1.2); border-color: var(--gold); }
+
+/* QR Code */
+#qr {
+  display: inline-block;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  margin-top: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+/* Chatbot */
+.chat {
+  max-width: 360px;
+  margin: 2rem auto;
+  background: var(--card);
+  backdrop-filter: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  text-align: left;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.log { padding: 1.5rem; height: 280px; overflow: auto; display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.9rem; scrollbar-width: thin; }
+.log::-webkit-scrollbar { width: 4px; }
+.log::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
+.log .b, .log .u { padding: 0.8rem 1rem; border-radius: 18px; max-width: 85%; line-height: 1.4; }
+.log .b { background: var(--sage-light); color: var(--sage); border-bottom-left-radius: 4px; }
+.log .u { background: var(--gold); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+/* Top controls */
+.top { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 15px); right: 15px; z-index: 100; display: flex; gap: 10px; }
+.top button {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--gold);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: grid;
+  place-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.top button:hover { background: var(--gold); color: #fff; transform: rotate(15deg); }
+</style>
+</head>
+<body>
+<div class="top"><button id="mus" aria-label="Musique">♪</button><button id="shr" aria-label="Partager">⇪</button></div>
+<main>
+
+<section class="cover" id="inv">
+  <div class="mono" style="animation: float 6s ease-in-out infinite;">G &amp; D</div>
+  <div class="orn" style="font-size: 1.2rem; margin-bottom: 0.5rem;">✧ ━━━━━━ ✧</div>
+  <h1 style="font-family: 'Dancing Script', cursive; text-transform: none; letter-spacing: 0; font-size: clamp(3.5rem, 15vw, 5rem);">L’Invitation</h1>
+  <div class="orn">❖ ❖ ❖</div>
+  <p style="font-size: 1.2rem; font-weight: 400; opacity: 0.9;">Grâce &amp; David</p>
+  <p style="opacity: 0.8;">ont la joie de vous convier à la célébration de leur union.</p>
+  <div class="hint">Défiler pour découvrir ↓</div>
+</section>
+
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+</style>
+
+<section id="date">
+  <h2>C’est aujourd’hui<br>le compte à rebours</h2>
+  <p>Samedi 27 février 2027 · 14 h 00</p>
+  <div class="count" id="cd"></div>
+  <a class="btn" id="cal" target="_blank" rel="noopener">AJOUTER À MON CALENDRIER</a>
+</section>
+
+<section id="rsvp">
+  <h2>RSVP</h2>
+  <div class="glass-card">
+    <p>Merci de confirmer votre présence avant le 13 février 2027 <span id="left" style="font-weight: 500; color: var(--gold);"></span>.</p>
+    <div style="margin: 1.5rem 0;">
+      <input type="text" id="name" placeholder="Votre nom" aria-label="Votre nom">
+      <div style="margin-top: 1rem;">
+        <p style="margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--mute);">Nombre de personnes</p>
+        <input type="number" id="nb" value="1" min="1" max="10" style="max-width: 80px; text-align: center;">
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+      <button class="btn on" id="yes">JE CONFIRME</button>
+      <button class="btn" id="no">JE NE PEUX PAS</button>
+    </div>
+    <div class="status" id="rs" role="status" style="margin-top: 1rem; font-weight: 500;"></div>
+  </div>
+</section>
+
+<style>
+.glass-card {
+  background: var(--card);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow);
+  max-width: 400px;
+  margin: 0 auto;
+}
+</style>
+
+<section id="qrs">
+  <h2>QR Code</h2>
+  <div class="glass-card">
+    <p>Voici votre QR code d’accès à la cérémonie. Présentez-le à l’entrée.</p>
+    <div id="qr"></div>
+    <p class="status" id="qrn" style="margin-top: 1rem; font-weight: 500; color: var(--gold);"></p>
+  </div>
+</section>
+
+<section class="drinks" id="drinks">
+  <h2>Boissons</h2>
+  <p>Aidez-nous à préparer la fête : choisissez vos boissons préférées.</p>
+  <h3 style="font-weight:400;margin:1.4rem 0 0">Sans alcool</h3>
+  <div class="chips" data-k="soft"></div>
+  <h3 style="font-weight:400;margin:0">Avec alcool</h3>
+  <div class="chips" data-k="alc"></div>
+  <div class="status" id="ds"></div>
+</section>
+
+<section id="gold">
+  <h2>Livre d’or</h2>
+  <div class="glass-card">
+    <p>Laissez un message aux mariés. Ils seront ravis de vous lire.</p>
+    <textarea id="gm" rows="3" placeholder="Écrivez votre message ici..."></textarea>
+    <button class="btn" id="gs" style="width: 100%; max-width: 360px;">ENVOYER MON MESSAGE</button>
+    <div class="msgs" id="gl"></div>
+  </div>
+</section>
+
+<section id="gift">
+  <h2>Cadeau</h2>
+  <div class="glass-card">
+    <p>Votre présence est notre plus beau cadeau. Si vous souhaitez nous gâter, voici comment faire.</p>
+    <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+      <button class="btn" data-g="Enveloppe">ENVELOPPE</button>
+      <button class="btn" data-g="Présents">LISTE DE MARIAGE</button>
+    </div>
+    <p class="status" id="gt" style="margin-top: 1rem; font-weight: 500; color: var(--sage);"></p>
+  </div>
+</section>
+
+<section id="inter">
+  <h2>Interactions</h2>
+  <div class="glass-card">
+    <p>Partagez votre enthousiasme avec les autres invités !</p>
+    <div id="bars" style="margin-bottom: 2rem;"></div>
+    <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+      <button class="react" data-r="❤️">❤️</button>
+      <button class="react" data-r="🎉">🎉</button>
+      <button class="react" data-r="🥂">🥂</button>
+      <button class="react" data-r="😍">😍</button>
+    </div>
+    <p class="status" id="rc" style="margin-top: 1rem; font-size: 1.2rem; letter-spacing: 0.1em;"></p>
+  </div>
+</section>
+
+<section id="map">
+  <h2>Lieu</h2>
+  <div class="glass-card">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📍</div>
+    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Salle Les Jardins d’Or</h3>
+    <p style="margin-bottom: 1.5rem;">Avenue de la Paix, Kinshasa</p>
+    <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Kinshasa+Avenue+de+la+Paix">VOIR LE PLAN</a>
+      <a class="btn on" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Kinshasa+Avenue+de+la+Paix">ITINÉRAIRE</a>
+    </div>
+  </div>
+</section>
+
+<section id="bot">
+  <h2>Chatbot WhatsApp</h2>
+  <p>Posez vos questions, nous répondons tout de suite.</p>
+  <div class="chat"><div class="log" id="log"></div><div class="qs" id="qs"></div></div>
+  <a class="btn" id="wa" target="_blank" rel="noopener">OUVRIR WHATSAPP</a>
+</section>
+
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+// ——— À personnaliser ———
+const defConf = {
+  date: new Date('2027-02-27T14:00:00'),
+  deadline: new Date('2027-02-13T23:59:00'),
+  wa: '243000000000',
+  title: 'Mariage de Grâce & David',
+  place: 'Avenue de la Paix, Kinshasa'
+};
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const S = {
+  get(k, d) { try { const v = localStorage.getItem('inv:' + k); return v ? JSON.parse(v) : d } catch (e) { return d } },
+  set(k, v) { try { localStorage.setItem('inv:' + k, JSON.stringify(v)) } catch (e) { } }
+};
+
+// Charger la config dynamique
+const savedConf = S.get('config', {});
+const C = {
+  ...defConf,
+  ...savedConf,
+  date: savedConf.date ? new Date(savedConf.date) : defConf.date,
+  deadline: savedConf.deadline ? new Date(savedConf.deadline) : defConf.deadline
+};
+
+// Mettre à jour les textes dynamiques
+if (savedConf.title) {
+  document.title = 'Invitation · ' + savedConf.title;
+  $$('.cover p')[0].textContent = savedConf.title;
+}
+if (savedConf.welcome) {
+  $$('.cover p')[1].textContent = savedConf.welcome;
+}
+if (savedConf.place) {
+  $$('#map p')[0].textContent = savedConf.place;
+}
+if (savedConf.rsvpText) {
+  $('#rsvp .glass-card p').firstChild.textContent = savedConf.rsvpText + ' ';
+}
+if (savedConf.drinksText) {
+  $('#drinks p').textContent = savedConf.drinksText;
+}
+if (savedConf.giftText) {
+  $('#gift .glass-card p').textContent = savedConf.giftText;
+}
+if (savedConf.interText) {
+  $('#inter .glass-card p').textContent = savedConf.interText;
+}
+
+// Scroll Reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('reveal');
+  });
+}, { threshold: 0.15 });
+$$('section').forEach(s => observer.observe(s));
+
+// Compte à rebours
+function tick() {
+  let d = Math.max(0, C.date - Date.now()), s = Math.floor(d / 1e3);
+  const u = [['jours', 86400], ['heures', 3600], ['min', 60], ['sec', 1]];
+  $('#cd').innerHTML = u.map(([l, n]) => {
+    const v = Math.floor(s / n); s %= n;
+    return `<div><b>${v}</b><span>${l}</span></div>`
+  }).join('');
+  const j = Math.ceil((C.deadline - Date.now()) / 864e5);
+  $('#left').textContent = j > 0 ? `(${j} jours restants)` : ''
+}
+tick(); setInterval(tick, 1000);
+
+const f = d => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
+$('#cal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(C.title) + '&dates=' + f(C.date) + '/' + f(new Date(+C.date + 6 * 36e5)) + '&location=' + encodeURIComponent(C.place);
+
+// RSVP + QR
+function qr() {
+  const n = S.get('name', 'Invité');
+  const q = qrcode(0, 'M');
+  q.addData('INVITATION|' + C.title + '|' + n + '|' + (S.get('nb', 1)) + ' pers.');
+  q.make();
+  $('#qr').innerHTML = q.createSvgTag(5, 0);
+  $('#qrn').textContent = 'Invité : ' + n
+}
+$('#name').value = S.get('name', '');
+$('#nb').value = S.get('nb', 1);
+
+function rsvp(ok) {
+  const n = $('#name').value.trim();
+  if (!n) { $('#rs').textContent = 'Veuillez entrer votre nom.'; return }
+  S.set('name', n);
+  S.set('nb', +$('#nb').value || 1);
+  S.set('rsvp', ok);
+  $('#rs').innerHTML = ok ? '<span style="color:var(--sage)">✓ Présence confirmée !</span>' : 'Réponse enregistrée. Vous nous manquerez.';
+  bars(); qr();
+}
+$('#yes').onclick = () => rsvp(true);
+$('#no').onclick = () => rsvp(false);
+if (S.get('rsvp') !== undefined) $('#rs').innerHTML = S.get('rsvp') ? '<span style="color:var(--sage)">✓ Présence confirmée !</span>' : 'Réponse enregistrée.';
+qr();
+
+// Boissons
+const D = {
+  soft: ['Coca', 'Energy Malt', 'Fanta', 'Maltina', 'Sprite', 'Tonic', 'Vitalo', 'Jus naturel'],
+  alc: ['Primus', 'Skol', 'Turbo King', 'Vin rouge', 'Champagne', 'Whisky', 'Mojito']
+};
+const dv = S.get('drinks', []);
+$$('.chips').forEach(c => D[c.dataset.k].forEach(x => {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.textContent = x;
+  b.setAttribute('aria-pressed', dv.includes(x));
+  b.onclick = () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on);
+    const a = $$('.chip[aria-pressed=true]').map(e => e.textContent);
+    S.set('drinks', a);
+    $('#ds').textContent = a.length + ' choix enregistré(s).';
+  };
+  c.append(b)
+}));
+
+// Livre d'or
+function gl() {
+  const m = S.get('gold', []);
+  $('#gl').innerHTML = m.map(t => `<div class="msg"></div>`).join('');
+  $$('#gl .msg').forEach((e, i) => e.textContent = m[i])
+}
+$('#gs').onclick = () => {
+  const t = $('#gm').value.trim();
+  if (!t) return;
+  const m = S.get('gold', []);
+  m.unshift((S.get('name', 'Un invité')) + ' : ' + t);
+  S.set('gold', m);
+  $('#gm').value = '';
+  gl();
+};
+gl();
+
+// Cadeau
+$$('[data-g]').forEach(b => b.onclick = () => {
+  S.set('gift', b.dataset.g);
+  $$('[data-g]').forEach(x => x.classList.toggle('on', x === b));
+  $('#gt').textContent = b.dataset.g === 'Enveloppe' ? 'Vous pouvez remettre votre enveloppe le jour J, à l’accueil.' : 'Merci ! La liste de présents sera communiquée par WhatsApp.';
+});
+if(S.get('gift')) $$(`[data-g="${S.get('gift')}"]`).forEach(b => b.classList.add('on'));
+
+// Interactions
+const base = { 'Confirmés': 18, 'En attente': 6, 'Absents': 2, 'Livre d’or': 4 };
+function bars() {
+  const r = S.get('rsvp');
+  const v = { ...base };
+  if (r === true) v['Confirmés']++;
+  if (r === false) v['Absents']++;
+  v['Livre d’or'] += S.get('gold', []).length;
+  const t = Object.values(v).reduce((a, b) => a + b, 0);
+  $('#bars').innerHTML = Object.entries(v).map(([k, n]) => `
+    <div class="bar">
+      ${k} <span style="float:right; color:var(--gold)">${Math.round(n / t * 100)}%</span>
+      <i><u style="width:${n / t * 100}%"></u></i>
+    </div>`).join('')
+}
+bars();
+
+const R = S.get('react', {});
+function rc() { $('#rc').textContent = Object.entries(R).map(([k, n]) => k + ' ' + n).join('  ') }
+$$('.react').forEach(b => b.onclick = () => {
+  R[b.dataset.r] = (R[b.dataset.r] || 0) + 1;
+  S.set('react', R);
+  rc();
+});
+rc();
+
+// Chatbot
+const FAQ = {
+  'Horaires': 'La cérémonie commence à 14 h 00, accueil dès 13 h 30.',
+  'Dress code': 'Noir et or. Élégance de rigueur.',
+  'Adresse': 'Salle Les Jardins d’Or, ' + C.place + '. Voir la section Lieu.',
+  'Parking': 'Un parking gardé est disponible à l’entrée.',
+  'Enfants': 'Les enfants sont les bienvenus, indiquez-les dans le RSVP.'
+};
+const log = $('#log');
+function say(t, c) {
+  const d = document.createElement('div');
+  d.className = c;
+  d.textContent = t;
+  log.append(d);
+  log.scrollTop = 9e9;
+}
+say('Bonjour ! Je réponds à vos questions sur le mariage.', 'b');
+Object.keys(FAQ).forEach(k => {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.textContent = k;
+  b.onclick = () => {
+    say(k, 'u');
+    setTimeout(() => say(FAQ[k], 'b'), 400);
+  };
+  $('#qs').append(b)
+});
+$('#wa').href = 'https://wa.me/' + C.wa + '?text=' + encodeURIComponent('Bonjour, j’ai une question sur le mariage de Grâce & David.');
+
+// Partage + Musique
+$('#shr').onclick = () => {
+  if (navigator.share) navigator.share({ title: C.title, url: location.href }).catch(() => { });
+  else {
+    navigator.clipboard && navigator.clipboard.writeText(location.href);
+    const old = $('#shr').textContent;
+    $('#shr').textContent = '✓';
+    setTimeout(() => $('#shr').textContent = old, 2000);
+  }
+};
+
+let ac, on = false, tm;
+const N = [392, 494, 587, 523, 440, 523, 587, 494];
+$('#mus').onclick = () => {
+  on = !on;
+  $('#mus').style.background = on ? 'var(--gold)' : 'rgba(255,255,255,0.2)';
+  $('#mus').style.color = on ? '#fff' : 'var(--gold)';
+  if (!on) { clearInterval(tm); return }
+  ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+  let i = 0;
+  tm = setInterval(() => {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.value = N[i++ % N.length];
+    g.gain.setValueAtTime(.001, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.06, ac.currentTime + .3);
+    g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + 1.6);
+    o.connect(g).connect(ac.destination);
+    o.start(); o.stop(ac.currentTime + 1.7)
+  }, 900)
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · Grâce & David</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --primary: #c5a059;
+      --primary-dark: #a8812c;
+      --bg: #f8f9fa;
+      --sidebar: #1a1815;
+      --text: #2c2a26;
+      --text-mute: #6c757d;
+      --card-bg: #ffffff;
+      --border: #e9ecef;
+      --success: #4a6762;
+      --danger: #dc3545;
+      --shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    aside {
+      width: 260px;
+      background: var(--sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      z-index: 100;
+    }
+    .brand {
+      padding: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--primary);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    nav { padding: 1rem 0; flex: 1; }
+    nav button {
+      width: 100%;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      text-align: left;
+    }
+    nav button:hover, nav button.active {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+    nav button.active { border-left: 4px solid var(--primary); }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      margin-left: 260px;
+      padding: 2rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 { font-family: 'Playfair Display', serif; margin: 0; font-size: 2rem; }
+
+    /* Grid & Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--primary);
+    }
+    .stat-info b { display: block; font-size: 1.5rem; margin-top: 0.2rem; }
+    .stat-info span { font-size: 0.85rem; color: var(--text-mute); }
+
+    .content-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      display: none;
+    }
+    .content-card.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Forms */
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-mute); }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    input:focus { outline: none; border-color: var(--primary); }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th { text-align: left; padding: 1rem; border-bottom: 2px solid var(--border); color: var(--text-mute); font-weight: 600; font-size: 0.9rem; }
+    td { padding: 1rem; border-bottom: 1px solid var(--border); }
+    .status-pill {
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-pill.yes { background: #d1e7dd; color: #0f5132; }
+    .status-pill.no { background: #f8d7da; color: #842029; }
+    .status-pill.pending { background: #fff3cd; color: #664d03; }
+
+    /* Table Management */
+    .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+    .table-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .table-card h3 { margin: 0 0 1rem 0; font-family: 'Playfair Display', serif; }
+    .guest-tag {
+      display: inline-block;
+      background: var(--bg);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin: 0.2rem;
+    }
+
+    @media (max-width: 900px) {
+      aside { width: 70px; }
+      .brand, nav span { display: none; }
+      main { margin-left: 70px; }
+      nav button { padding: 1.5rem; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <div class="brand">Gestion Mariage</div>
+    <nav>
+      <button class="active" onclick="showTab('dash')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></button>
+      <button onclick="showTab('text')"><i data-lucide="file-text"></i> <span>Invitation</span></button>
+      <button onclick="showTab('guests')"><i data-lucide="users"></i> <span>Invités</span></button>
+      <button onclick="showTab('tables')"><i data-lucide="grid"></i> <span>Tables</span></button>
+      <button onclick="showTab('messages')"><i data-lucide="message-square"></i> <span>Livre d'or</span></button>
+    </nav>
+    <div style="padding: 2rem;">
+      <button class="btn" style="width: 100%; background: rgba(255,255,255,0.1);" onclick="window.open('Invitation interactive · Grâce & David.html')">
+        <i data-lucide="external-link"></i> <span style="margin-left: 8px;">Voir l'invitation</span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <h1 id="tab-title">Tableau de bord</h1>
+      <div id="last-update" style="font-size: 0.85rem; color: var(--text-mute);">Dernière mise à jour: à l'instant</div>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i data-lucide="users"></i></div>
+        <div class="stat-info">
+          <span>Total Invités</span>
+          <b id="stat-total">0</b>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color: var(--success);"><i data-lucide="check-circle"></i></div>
+        <div class="stat-info">
+          <span>Confirmés</span>
+          <b id="stat-yes">0</b>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color: var(--danger);"><i data-lucide="x-circle"></i></div>
+        <div class="stat-info">
+          <span>Absents</span>
+          <b id="stat-no">0</b>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i data-lucide="message-circle"></i></div>
+        <div class="stat-info">
+          <span>Messages</span>
+          <b id="stat-msgs">0</b>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Overview -->
+    <div id="dash" class="content-card active">
+      <h2>Aperçu rapide</h2>
+      <p>Bienvenue dans votre espace d'administration. Vous pouvez gérer ici tous les aspects de votre mariage.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+        <div>
+          <h3>Derniers messages</h3>
+          <div id="recent-msgs"></div>
+        </div>
+        <div>
+          <h3>Répartition des réponses</h3>
+          <div id="rsvp-chart" style="height: 200px; background: var(--bg); border-radius: 16px; display: grid; place-items: center; color: var(--text-mute);">
+            [ Graphique de répartition ]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text Management -->
+    <div id="text" class="content-card">
+      <h2>Personnaliser les textes</h2>
+      <p style="color: var(--text-mute); margin-bottom: 2rem;">Modifiez ici les textes de chaque section de votre invitation.</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+          <h3>Général & Couverture</h3>
+          <div class="form-group">
+            <label>Noms des mariés (Titre)</label>
+            <input type="text" id="conf-title" placeholder="Ex: Grâce & David">
+          </div>
+          <div class="form-group">
+            <label>Texte de bienvenue</label>
+            <textarea id="conf-welcome" rows="2" placeholder="Ex: ont la joie de vous convier..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Date du mariage</label>
+            <input type="datetime-local" id="conf-date">
+          </div>
+          <div class="form-group">
+            <label>Lieu (Nom & Adresse)</label>
+            <input type="text" id="conf-place" placeholder="Ex: Salle Les Jardins d’Or, Kinshasa">
+          </div>
+          <div class="form-group">
+            <label>Numéro WhatsApp (Bot)</label>
+            <input type="text" id="conf-wa" placeholder="Ex: 243000000000">
+          </div>
+        </div>
+
+        <div>
+          <h3>Sections Spécifiques</h3>
+          <div class="form-group">
+            <label>Texte RSVP (Consigne)</label>
+            <textarea id="conf-rsvp-text" rows="2" placeholder="Ex: Merci de confirmer votre présence avant le..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Texte Boissons</label>
+            <textarea id="conf-drinks-text" rows="2" placeholder="Ex: Aidez-nous à préparer la fête..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Texte Cadeaux</label>
+            <textarea id="conf-gift-text" rows="2" placeholder="Ex: Votre présence est notre plus beau cadeau..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Texte Interactions</label>
+            <textarea id="conf-inter-text" rows="2" placeholder="Ex: Partagez votre enthousiasme..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+        <button class="btn" onclick="saveConfig()" style="width: 100%;">ENREGISTRER TOUS LES TEXTES</button>
+      </div>
+    </div>
+
+    <!-- Guest List -->
+    <div id="guests" class="content-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>Liste des invités</h2>
+        <button class="btn" onclick="exportGuests()" style="background: var(--success);">EXPORTER CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Personnes</th>
+            <th>Réponse</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="guests-table">
+          <!-- Data injected here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Table Management -->
+    <div id="tables" class="content-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Gestion des tables</h2>
+        <button class="btn" onclick="addTable()">+ AJOUTER UNE TABLE</button>
+      </div>
+      <div class="tables-grid" id="tables-list">
+        <!-- Tables injected here -->
+      </div>
+    </div>
+
+    <!-- Guestbook -->
+    <div id="messages" class="content-card">
+      <h2>Livre d'or</h2>
+      <div id="all-messages" style="display: grid; gap: 1rem;">
+        <!-- Messages injected here -->
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    const S = {
+      get(k, d) { try { const v = localStorage.getItem('inv:' + k); return v ? JSON.parse(v) : d } catch (e) { return d } },
+      set(k, v) { try { localStorage.setItem('inv:' + k, JSON.stringify(v)) } catch (e) { } }
+    };
+
+    function showTab(id) {
+      document.querySelectorAll('.content-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-title').textContent = event.currentTarget.querySelector('span').textContent;
+      refreshData();
+    }
+
+    function refreshData() {
+      // Load stats
+      const rsvp = S.get('rsvp_data', []); // In real app, this would be a list of responses
+      // Mocking some data for the demo based on the single user storage
+      const name = S.get('name', '');
+      const hasRsvp = S.get('rsvp', undefined);
+      const nb = S.get('nb', 1);
+      const msgs = S.get('gold', []);
+      
+      // Update stats cards
+      document.getElementById('stat-total').textContent = (hasRsvp !== undefined ? 1 : 0);
+      document.getElementById('stat-yes').textContent = (hasRsvp === true ? 1 : 0);
+      document.getElementById('stat-no').textContent = (hasRsvp === false ? 1 : 0);
+      document.getElementById('stat-msgs').textContent = msgs.length;
+
+      // Update Guests Table
+      const table = document.getElementById('guests-table');
+      table.innerHTML = '';
+      if (hasRsvp !== undefined) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${name}</td>
+          <td>${nb}</td>
+          <td><span class="status-pill ${hasRsvp ? 'yes' : 'no'}">${hasRsvp ? 'Confirmé' : 'Absent'}</span></td>
+          <td><button onclick="resetRsvp()" style="background:none;border:none;color:var(--danger);cursor:pointer;"><i data-lucide="trash-2"></i></button></td>
+        `;
+        table.appendChild(tr);
+        lucide.createIcons();
+      }
+
+      // Update Messages
+      const msgList = document.getElementById('all-messages');
+      msgList.innerHTML = msgs.map(m => `
+        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--bg);">
+          ${m}
+        </div>
+      `).join('');
+
+      // Update Tables
+      updateTables();
+    }
+
+    function updateTables() {
+      const tables = S.get('tables', [
+        {id: 1, name: 'Table d\'Honneur', guests: ['Grâce', 'David']}, 
+        {id: 2, name: 'Famille Mariée', guests: []},
+        {id: 3, name: 'Famille Marié', guests: []},
+        {id: 4, name: 'Amis', guests: []}
+      ]);
+      const list = document.getElementById('tables-list');
+      list.innerHTML = tables.map(t => `
+        <div class="table-card">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <h3>${t.name}</h3>
+            <button onclick="deleteTable(${t.id})" style="background:none; border:none; color:var(--text-mute); cursor:pointer;"><i data-lucide="x" style="width:16px;"></i></button>
+          </div>
+          <div style="min-height: 80px; margin-top: 1rem; border: 1px dashed var(--border); border-radius: 12px; padding: 0.5rem;">
+            ${t.guests.length ? t.guests.map(g => `<span class="guest-tag">${g}</span>`).join('') : '<span style="color:var(--text-mute);font-size:0.8rem;display:block;text-align:center;margin-top:1.5rem;">Glissez un invité ici</span>'}
+          </div>
+          <button class="btn" style="margin-top: 1rem; width: 100%; font-size: 0.8rem; padding: 0.5rem;" onclick="assignGuest(${t.id})">ASSIGNER UN INVITÉ</button>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function addTable() {
+      const name = prompt('Nom de la table ?');
+      if (!name) return;
+      const tables = S.get('tables', []);
+      tables.push({ id: Date.now(), name, guests: [] });
+      S.set('tables', tables);
+      updateTables();
+    }
+
+    function deleteTable(id) {
+      if (!confirm('Supprimer cette table ?')) return;
+      let tables = S.get('tables', []);
+      tables = tables.filter(t => t.id !== id);
+      S.set('tables', tables);
+      updateTables();
+    }
+
+    function assignGuest(tableId) {
+      const guest = prompt('Nom de l\'invité à ajouter ?');
+      if (!guest) return;
+      const tables = S.get('tables', []);
+      const table = tables.find(t => t.id === tableId);
+      if (table) {
+        table.guests.push(guest);
+        S.set('tables', tables);
+        updateTables();
+      }
+    }
+
+    function exportGuests() {
+      const name = S.get('name', 'Invité Test');
+      const nb = S.get('nb', 2);
+      const rsvp = S.get('rsvp', true);
+      const csv = "Nom,Nombre,Status\n" + `${name},${nb},${rsvp ? 'Confirmé' : 'Absent'}`;
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('hidden', '');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'liste_invites.csv');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Init Config
+    function initConfig() {
+      const C = S.get('config', {
+        title: 'Grâce & David',
+        welcome: 'ont la joie de vous convier à la célébration de leur union.',
+        date: '2027-02-27T14:00',
+        place: 'Salle Les Jardins d’Or, Avenue de la Paix, Kinshasa',
+        wa: '243000000000',
+        rsvpText: 'Merci de confirmer votre présence avant le 13 février 2027',
+        drinksText: 'Aidez-nous à préparer la fête : choisissez vos boissons préférées.',
+        giftText: 'Votre présence est notre plus beau cadeau. Si vous souhaitez nous gâter, voici comment faire.',
+        interText: 'Partagez votre enthousiasme avec les autres invités !'
+      });
+      document.getElementById('conf-title').value = C.title || '';
+      document.getElementById('conf-welcome').value = C.welcome || '';
+      document.getElementById('conf-date').value = C.date || '';
+      document.getElementById('conf-place').value = C.place || '';
+      document.getElementById('conf-wa').value = C.wa || '';
+      document.getElementById('conf-rsvp-text').value = C.rsvpText || '';
+      document.getElementById('conf-drinks-text').value = C.drinksText || '';
+      document.getElementById('conf-gift-text').value = C.giftText || '';
+      document.getElementById('conf-inter-text').value = C.interText || '';
+    }
+
+    function saveConfig() {
+      const newConf = {
+        title: document.getElementById('conf-title').value,
+        welcome: document.getElementById('conf-welcome').value,
+        date: document.getElementById('conf-date').value,
+        place: document.getElementById('conf-place').value,
+        wa: document.getElementById('conf-wa').value,
+        rsvpText: document.getElementById('conf-rsvp-text').value,
+        drinksText: document.getElementById('conf-drinks-text').value,
+        giftText: document.getElementById('conf-gift-text').value,
+        interText: document.getElementById('conf-inter-text').value
+      };
+      S.set('config', newConf);
+      alert('Configuration enregistrée !');
+    }
+
+    function resetRsvp() {
+      if(confirm('Supprimer cette réponse ?')) {
+        localStorage.removeItem('inv:rsvp');
+        localStorage.removeItem('inv:name');
+        localStorage.removeItem('inv:nb');
+        refreshData();
+      }
+    }
+
+    initConfig();
+    refreshData();
+  </script>
+</body>
+</html>
