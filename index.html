@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Invitation · Grâce & David</title>
+<title>Invitation · Manassé & Vainqueur</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -82,7 +82,7 @@ p { margin: 1rem auto; max-width: 36ch; font-size: 1.05rem; }
   align-items: center;
   background: 
     linear-gradient(rgba(26, 24, 21, 0.4), rgba(26, 24, 21, 0.7)),
-    url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80');
+    url('assets/couple.jpg');
   background-size: cover;
   background-position: center;
   color: #fff;
@@ -265,11 +265,11 @@ textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shad
 <main>
 
 <section class="cover" id="inv">
-  <div class="mono" style="animation: float 6s ease-in-out infinite;">G &amp; D</div>
+  <div class="mono" style="animation: float 6s ease-in-out infinite;">M &amp; V</div>
   <div class="orn" style="font-size: 1.2rem; margin-bottom: 0.5rem;">✧ ━━━━━━ ✧</div>
   <h1 style="font-family: 'Dancing Script', cursive; text-transform: none; letter-spacing: 0; font-size: clamp(3.5rem, 15vw, 5rem);">L’Invitation</h1>
   <div class="orn">❖ ❖ ❖</div>
-  <p style="font-size: 1.2rem; font-weight: 400; opacity: 0.9;">Grâce &amp; David</p>
+  <p style="font-size: 1.2rem; font-weight: 400; opacity: 0.9;">Manassé &amp; Vainqueur</p>
   <p style="opacity: 0.8;">ont la joie de vous convier à la célébration de leur union.</p>
   <div class="hint">Défiler pour découvrir ↓</div>
 </section>
@@ -283,7 +283,7 @@ textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shad
 
 <section id="date">
   <h2>C’est aujourd’hui<br>le compte à rebours</h2>
-  <p>Samedi 27 février 2027 · 14 h 00</p>
+  <p>Vendredi 4 décembre 2026 · 18 h 00</p>
   <div class="count" id="cd"></div>
   <a class="btn" id="cal" target="_blank" rel="noopener">AJOUTER À MON CALENDRIER</a>
 </section>
@@ -291,7 +291,7 @@ textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shad
 <section id="rsvp">
   <h2>RSVP</h2>
   <div class="glass-card">
-    <p>Merci de confirmer votre présence avant le 13 février 2027 <span id="left" style="font-weight: 500; color: var(--gold);"></span>.</p>
+    <p>Merci de confirmer votre présence avant le 20 novembre 2026 <span id="left" style="font-weight: 500; color: var(--gold);"></span>.</p>
     <div style="margin: 1.5rem 0;">
       <input type="text" id="name" placeholder="Votre nom" aria-label="Votre nom">
       <div style="margin-top: 1rem;">
@@ -402,10 +402,10 @@ textarea:focus, input:focus { outline: none; border-color: var(--gold); box-shad
 <script>
 // ——— À personnaliser ———
 const defConf = {
-  date: new Date('2027-02-27T14:00:00'),
-  deadline: new Date('2027-02-13T23:59:00'),
+  date: new Date('2026-12-04T18:00:00'),
+  deadline: new Date('2026-11-20T23:59:00'),
   wa: '243000000000',
-  title: 'Mariage de Grâce & David',
+  title: 'Mariage de Manassé & Vainqueur',
   place: 'Avenue de la Paix, Kinshasa'
 };
 
@@ -572,7 +572,7 @@ rc();
 
 // Chatbot
 const FAQ = {
-  'Horaires': 'La cérémonie commence à 14 h 00, accueil dès 13 h 30.',
+  'Horaires': 'La cérémonie commence à 18 h 00, accueil dès 17 h 30.',
   'Dress code': 'Noir et or. Élégance de rigueur.',
   'Adresse': 'Salle Les Jardins d’Or, ' + C.place + '. Voir la section Lieu.',
   'Parking': 'Un parking gardé est disponible à l’entrée.',
@@ -597,7 +597,7 @@ Object.keys(FAQ).forEach(k => {
   };
   $('#qs').append(b)
 });
-$('#wa').href = 'https://wa.me/' + C.wa + '?text=' + encodeURIComponent('Bonjour, j’ai une question sur le mariage de Grâce & David.');
+$('#wa').href = 'https://wa.me/' + C.wa + '?text=' + encodeURIComponent('Bonjour, j’ai une question sur le mariage de Manassé & Vainqueur.');
 
 // Partage + Musique
 $('#shr').onclick = () => {
